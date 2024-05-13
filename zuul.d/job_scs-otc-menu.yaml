@@ -1,0 +1,12 @@
+---
+- job:
+    name: scs
+    description: "Sovereign Cloud Stack"
+    parent: null
+    abstract: true
+
+- job:
+    name: otc
+    description: "Open Telekom Cloud"
+    parent: scs
+    abstract: true
