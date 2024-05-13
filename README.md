@@ -88,9 +88,10 @@ A Project brings togehter Pipelines (the trigger) and Jobs (the Task):
         - ansible-lint
         - flake8
         - testbed-deploy-managerless
-        - python-black
-        - yamllint 
 ```
+Here, the Project executes a job with a assigned ansible playbook 'testbed-deploy-managerless' when trigged by the post pipeline. The 'periodic-hourly' Pipeline executes the job 'testbed-deploy-managerless' too. But before, an 'ansible-lint' and 'flake8' is executed. Both aren't ansible playbooks. They are executed directly and should be confgured on the nodepool (binary) and within the untrused Repo (config).
+
+
 
 
 
