@@ -55,19 +55,22 @@ Jobs reference ansible playbooks which zull executes.
 ```
 ---
 - job:
-    name: trusted
-    parent: hello-world
-    description: "Hello-World trusted Job"
-    # nodeset: ubuntu-jammy
-    run: playbooks/hello-world.yaml
+    name: testbed-deploy-managerless
+    nodeset: ubuntu-jammy
+    pre-run: playbooks/managerless/pre.yml
+    run: playbooks/managerless/deploy.yml
+    post-run: playbooks/managerless/post.yml
     required-projects:
-      - opentelekomcloud-scs/zuul-test
+      - osism/terraform-base
     timeout: 10800
-    #secrets:
-    #  - name: secret
-    #    secret: SECRET_TEST 
+    vars:
+      terraform_blueprint: testbed-managerless
+      cloud_env: managerless-otc
+    secrets:
+      - name: secret
+        secret: SECRET_TESTBED
     semaphores:
-      - name: semaphore-test
+      - name: semaphore-testbed-managerless
 ```
 There is no reference to the Pipeline, so it's a pure Definition. 
 
