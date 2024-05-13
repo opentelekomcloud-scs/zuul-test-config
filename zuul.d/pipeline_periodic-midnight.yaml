@@ -1,0 +1,9 @@
+---
+- pipeline:
+    name: periodic-midnight
+    description: This pipeline runs jobs daily at 0am.
+    post-review: true
+    manager: independent
+    trigger:
+      timer:
+        - time: '0 0 * * *'

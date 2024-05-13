@@ -1,0 +1,10 @@
+---
+- pipeline:
+    name: periodic-hourly
+    description: This pipeline runs hourly at the mid of an hour.
+    post-review: true
+    manager: independent
+    precedence: low
+    trigger:
+      timer:
+        - time: '30 * * * *'
