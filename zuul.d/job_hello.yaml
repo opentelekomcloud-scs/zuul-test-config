@@ -1,6 +1,7 @@
 ---
 - job:
-    name: hello-world/trusted
+    name: trusted
+    parent: hello-world
     description: "Hello-World trusted Job"
     # nodeset: ubuntu-jammy
     run: playbooks/hello-world.yaml
