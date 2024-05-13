@@ -1,9 +1,0 @@
-- project:
-    merge-mode: squash-merge
-    check:
-      jobs:
-        - noop
-    gate:
-      jobs:
-        - hello-world/untrusted
-        - hello-world/trusted
