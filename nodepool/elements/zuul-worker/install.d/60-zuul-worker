@@ -1,0 +1,75 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Add zuul user and group.  Note we don't want to rely on
+# "useradd"'s group adding behaviour, because it might differ across
+# distros.
+groupadd zuul
+useradd -m zuul -g zuul -s /bin/bash
+
+cat > /etc/sudoers.d/zuul << EOF
+zuul ALL=(ALL) NOPASSWD:ALL
+EOF
+chmod 0440 /etc/sudoers.d/zuul
+
+visudo -c || die "Error setting zuul sudo!"
+
+# this was copied from outside the chroot by extras.d
+_pub_key=/tmp/in_target.d/zuul-user-ssh-public-key
+if [ ! -f $_pub_key ]; then
+    die "Can not find Zuul public key!"
+fi
+
+mkdir -p /home/zuul/.ssh
+chmod 700 /home/zuul/.ssh
+cp $_pub_key /home/zuul/.ssh/authorized_keys
+
+# cleanup everything to the right owner
+chown -R zuul:zuul /home/zuul
+
+# a lot of caching happens in extra-data.d (for "historical" reasons).
+# We've put the cache stuff into /opt/cache/files, but again, for
+# "historical" reasons, ensure this is available in /home/zuul
+#
+# We do this for zuul as relative paths to the current user's homedir
+# are used in places like devstack-gate.
+#
+# Check if the cache exists as we don't have a strict dependency on the
+# devstack-cache element. This allows you to build an image without
+# incurring the cost of caching all the things.
+if [ -d /opt/cache/files ] ; then
+    mkdir -p /home/zuul/cache
+    chown zuul:zuul /home/zuul/cache
+    ln -sf /opt/cache/files /home/zuul/cache/files
+    # but make sure the cache is readable by everyone
+    chmod -R a+rX /opt/cache/files/*
+fi
+
+
+# python3.12 is needed for OSISM Pipeline
+# Since it is not in standard Ubuntu, it has to be downloaded and compiled
+apt-get-update
+apt-get install wget build-essential checkinstall -y
+apt-get install libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev -y
+cd /tmp 
+wget https://www.python.org/ftp/python/3.12.1/Python-3.12.1.tar.xz 
+tar -xf Python-3.12.1.tar.xz 
+cd Python-3.12.1 
+./configure --enable-optimizations 
+make -j $(nproc) 
+make install 
+python3 --version 
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 
+python3 get-pip.py 
+cd /tmp 
+rm -rf Python-3.12.1.tar.xz Python-3.12.1 
+
+# Ansible with ansible-core > 2.15 needed
+pip install ansible==9.5.1
+ANSIBLE_GALAXY_SERVER_GALAXY_URL=https://galaxy.ansible.com ANSIBLE_GALAXY_SERVER_LIST=galaxy ansible-galaxy collection install ansible.posix
+

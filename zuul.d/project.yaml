@@ -1,0 +1,13 @@
+---
+- project:
+    merge-mode: squash-merge
+    default-branch: master
+    check:
+      jobs:
+        - noop   
+    gate:
+      jobs:
+        - noop
+    post:
+      jobs: 
+        - noop   
