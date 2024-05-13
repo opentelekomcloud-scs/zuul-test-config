@@ -1,0 +1,13 @@
+- pipeline:
+    name: post
+    description: |
+      This pipeline runs jobs that operate after each change is
+      merged. Queue items are identified by the abbreviated hash (git
+      log --format=%h) of the merge commit.
+    manager: supercedent
+    precedence: high
+    post-review: true
+    trigger:
+      github:
+        - event: push
+          ref: ^refs/heads/.*$
