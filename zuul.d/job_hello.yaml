@@ -1,5 +1,9 @@
 ---
 - job:
+    name: hello-world
+    description: "Hello-World Testjobs"
+    
+- job:
     name: trusted
     parent: hello-world
     description: "Hello-World trusted Job"
