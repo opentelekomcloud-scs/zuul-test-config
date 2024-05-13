@@ -1,6 +1,6 @@
 ---
 - pipeline:
-    name: check2
+    name: check
     description: |
       Newly opened pull requests enter this pipeline to receive an
       initial verification
