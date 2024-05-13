@@ -1,0 +1,14 @@
+---
+- job:
+    name: hello-world-trusted
+    description: "Hello-World trusted Job"
+    # nodeset: ubuntu-jammy
+    run: playbooks/hello-world.yaml
+    required-projects:
+      - opentelekomcloud-scs/zuul-test
+    timeout: 10800
+    secrets:
+      - name: secret
+        secret: SECRET_TEST 
+    semaphores:
+      - name: semaphore-test
