@@ -6,13 +6,30 @@
 
 - hosts: all
   tasks:
-    - name: Ausgabe von "pre.yaml"
-      debug:
-        msg: "pre.yaml"
-
     - include_role:
         name: start-zuul-console
 
+    - block:
+        # A regular VM way
+        - include_role:
+            name: validate-host
+        - include_role:
+            name: prepare-workspace
+        - include_role:
+            name: add-build-sshkey
+      when: "ansible_connection != 'kubectl'"
+    - block:
+        # A Pod way
+        - include_role:
+            name: prepare-workspace-openshift
+        - include_role:
+            name: remove-zuul-sshkey
+      run_once: true
+      when: "ansible_connection == 'kubectl'"
+
+    - import_role:
+        name: ensure-output-dirs
+      when: ansible_user_dir is defined
 
 # If there is a registered role (as constructed from project name) try to
 # generate secret-id and leave it at well-known location. The job is then
