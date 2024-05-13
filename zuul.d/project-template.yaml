@@ -1,0 +1,7 @@
+---
+- project-template:
+    name: zuul-template
+    check:
+      jobs:
+        - hello-world/trusted
+        - hello-world/untrusted
