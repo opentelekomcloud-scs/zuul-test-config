@@ -1,11 +1,5 @@
 ---
 - job:
-    name: hello-world
-    description: "Hello-World Testjobs"
-    parent: null
-    abstract: true
-
-- job:
     name: trusted
     parent: hello-world
     description: "Hello-World trusted Job"
