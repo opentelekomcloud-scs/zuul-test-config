@@ -94,6 +94,27 @@ A Project brings togehter Pipelines (the trigger) and Jobs (the Task):
 ```
 Here, the Project executes a job with a assigned ansible playbook 'testbed-deploy-managerless' when trigged by the post pipeline. The 'periodic-hourly' Pipeline executes the job 'testbed-deploy-managerless' too. But before, an 'ansible-lint' and 'flake8' is executed. Both aren't ansible playbooks. They are executed directly and should be confgured on the nodepool (binary) and within the untrused Repo (config).
 
+## Zuul Secrets
+To create a Zuul Secret, you have to install the Zuul-Client:
+```
+pip install zuul-client
+```
+Zuul Secrets are encrypted keys where the algorithm is dependend on the Zuul Installation, the Zuul Tenant, the Zuul Project and the file with the key to be encrypted:
+```
+zuul-client --zuul-url https://zuul.otc-scs.t-systems.net/ encrypt --tenant zuul-test --project opentelekomcloud-scs/zuul-test-config --infile ./otc_obs_ak 
+writing RSA key
+
+- secret:
+    name: <name>
+    data:
+      <fieldname>: !encrypted/pkcs1-oaep
+        - AqJisk0BlgujDQeyBYkb45lco2J4d8RQwDeNBi12345sa+ymAuot7onWQdtItEQY9Ap/5
+...
+          +onNDLm0vYD/3bJJKlLAM6p6Rde4ghwsk/N5EH7p0H2JH+osLG8MqwvKpYd4i4=
+
+```
+
+
 
 
 
