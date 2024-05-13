@@ -39,5 +39,3 @@
       zuul_use_fetch_output: true
     secrets:
       - obs_log_upload
-
-
