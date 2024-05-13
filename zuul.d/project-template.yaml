@@ -1,6 +1,6 @@
 ---
 - project-template:
-    name: zuul-template
+    name: zuul-project-template
     check:
       jobs:
         - hello-world/trusted
