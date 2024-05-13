@@ -7,8 +7,8 @@
     required-projects:
       - opentelekomcloud-scs/zuul-test
     timeout: 10800
-    secrets:
-      - name: secret
-        secret: SECRET_TEST 
+    #secrets:
+    #  - name: secret
+    #    secret: SECRET_TEST 
     semaphores:
       - name: semaphore-test
