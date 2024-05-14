@@ -3,7 +3,7 @@
     name: trusted
     parent: hello-world
     description: "Hello-World trusted Job"
-    # nodeset: ubuntu-jammy
+    nodeset: ubuntu-jammy
     run: playbooks/hello-world.yaml
     required-projects:
       - opentelekomcloud-scs/zuul-test
