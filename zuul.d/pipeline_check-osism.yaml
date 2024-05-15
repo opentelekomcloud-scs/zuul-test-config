@@ -5,10 +5,9 @@
       Checks the status of OSISM Testbed and merges with local copy if needed
     manager: independent
     trigger:
-      github:
+      github.com/osism/testbed:
         - event: pull_request
           action:
             - opened
             - synchronize
-          repo: osism/testbed
       
