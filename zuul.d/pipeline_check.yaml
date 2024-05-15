@@ -16,14 +16,14 @@
           action: comment
           comment: (?i)^\s*recheck\s*$
         - event: check_run
-    start:
-      github:
-        check: 'in_progress'
-        comment: false
-    success:
-      github:
-        check: 'success'
-    failure:
-      github:
-        check: 'failure'
+    # start:
+    #   github:
+    #     check: 'in_progress'
+    #     comment: false
+    # success:
+    #   github:
+    #     check: 'success'
+    # failure:
+    #   github:
+    #     check: 'failure'
       
