@@ -1,5 +1,0 @@
-- project:
-    name: osism/testbed
-    check:
-      jobs:
-        - verify-osism-testbed
