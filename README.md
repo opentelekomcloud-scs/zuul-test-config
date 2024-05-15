@@ -101,7 +101,7 @@ pip install zuul-client
 ```
 Zuul Secrets are encrypted keys where the algorithm is dependend on the Zuul Installation, the Zuul Tenant, the Zuul Project and the file with the key to be encrypted:
 ```
-zuul-client --zuul-url https://zuul.otc-scs.t-systems.net/ encrypt --tenant zuul-test --project opentelekomcloud-scs/zuul-test-config --infile ./otc_obs_ak 
+zuul-client --zuul-url https://zuul.otc-scs.t-systems.net/ encrypt --tenant scs-stack --project opentelekomcloud-scs/zuul-test-config --infile ./otc_obs_ak 
 writing RSA key
 
 - secret:
@@ -113,7 +113,19 @@ writing RSA key
           +onNDLm0vYD/3bJJKlLAM6p6Rde4ghwsk/N5EH7p0H2JH+osLG8MqwvKpYd4i4=
 
 ```
+and Secret Key
+```
+zuul-client --zuul-url https://zuul.otc-scs.t-systems.net/ encrypt --tenant scs-stack --project opentelekomcloud-scs/zuul-test-config --infile ./otc_obs_sk 
+writing RSA key
 
+- secret:
+    name: <name>
+    data:
+      <fieldname>: !encrypted/pkcs1-oaep
+        - AqJisk0BlgujDQeyBYkb45lco2J4d8RQwDeNBi12345sa+ymAuot7onWQdtItEQY9Ap/5
+...
+          +onNDLm0vYD/3bJJKlLAM6p6Rde4ghwsk/N5EH7p0H2JH+osLG8MqwvKpYd4i4=
+```
 
 
 
