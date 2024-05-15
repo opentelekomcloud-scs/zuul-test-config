@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+    - name: Check for new commits
+      git:
+        repo: 'https://github.com/osism/testbed'
+        dest: '/tmp/osism-testbed'
+        update: yes
+      register: git_result
+
+    - name: Print changes if any
+      debug:
+        msg: "New commits were found."
+      when: git_result.changed

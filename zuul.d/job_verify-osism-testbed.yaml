@@ -1,0 +1,5 @@
+- job:
+    name: verify-osism-testbed
+    description: |
+      Verify new commits in osism/testbed without using its zuul configurations.
+    run: playbooks/scs/verify-osism-testbed.yaml
