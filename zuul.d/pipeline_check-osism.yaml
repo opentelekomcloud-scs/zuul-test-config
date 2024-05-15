@@ -1,0 +1,15 @@
+---
+- pipeline:
+    name: check-osism
+    description: |
+      Checks the status of OSISM Testbed and merges with local copy if needed
+    manager: independent
+    trigger:
+      github:
+        - event: pull_request
+          action:
+            - opened
+            - synchronize
+          org: osism
+          repo: testbed
+      
