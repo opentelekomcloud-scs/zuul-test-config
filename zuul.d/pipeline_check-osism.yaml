@@ -10,6 +10,5 @@
           action:
             - opened
             - synchronize
-          org: osism
-          repo: testbed
+          repo: osism/testbed
       
