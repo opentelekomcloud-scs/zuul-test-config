@@ -8,4 +8,5 @@
       In addition to the plain base job this collects extra logs,
       docs and artifacts from all nodes.
     post-run:
-      - playbooks/base/post-fetch.yaml
+      - playbooks/base/post-logs.yaml
+      # - playbooks/base/post-fetch.yaml
