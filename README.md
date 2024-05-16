@@ -101,7 +101,7 @@ pip install zuul-client
 ```
 Zuul Secrets are encrypted keys where the algorithm is dependend on the Zuul Installation, the Zuul Tenant, the Zuul Project and the file with the key to be encrypted:
 ```
-zuul-client --zuul-url https://zuul.otc-scs.t-systems.net/ encrypt --tenant scs-stack --project opentelekomcloud-scs/zuul-test-config --infile ./otc_obs_ak 
+zuul-client --zuul-url https://zuul.otc-scs.t-systems.net/ encrypt --tenant scs-stack --project github.com/opentelekomcloud-scs/zuul-test-config --infile ./otc_obs_ak 
 writing RSA key
 
 - secret:
@@ -128,8 +128,78 @@ writing RSA key
 ```
 
 
+# ZUUL Troubeshooting
+
+## Login 
+There are two prosibilities to logon:
+   * argocd shell
+   * make tunnel && make kube
+
+Here the second option is described:
+
+### Scheduler
+```
+ kubectl exec -it -n zuul-ci $(kubectl get pod -n zuul-ci -l app.kubernetes.io/name=zuul,app.kubernetes.io/component=zuul-scheduler -o jsonpath='{.items[0].metadata.name}') -c zuul -- bash
+```
+### Executor
+``` 
+kubectl exec -it -n zuul-ci $(kubectl get pod -n zuul-ci -l app.kubernetes.io/name=zuul,app.kubernetes.io/component=zuul-executor -o jsonpath='{.items[0].metadata.name}') -c zuul -- bash
+```
+
+## Check tenant
+```
+zuul-admin tenant-conf-check
+```
+
+## Create auth string
+- [ZUUL Client Docu](https://zuul-ci.org/docs/zuul/latest/client.html)
+
+In scheduler do
+```
+zuul-admin  create-auth-token --auth-config zuul_operator --user alice --tenant scs-stack --expires-in 1800
+```
+Copy the resulting string into `~/.zuul.conf`
+```
+[scs]
+url=https://zuul.otc-scs.t-systems.net/
+auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbWFuYWdlc2Yuc2ZyZG90ZXN0aW5zdGFuY2Uub3JnIiwienV1bC50ZW5hbnRzIjp7ImxvY2FsIjoiKiJ9LCJleHAiOjE1Mzc0MTcxOTguMzc3NTQ0fQ.DLbKx1J84wV4Vm7sv3zw9Bw9-WuIka7WkPQxGDAHz7sdfasdf
+[scs-stack]
+url=https://zuul.otc-scs.t-systems.net/
+auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbWFuYWdlc2Yuc2ZyZG90ZXN0aW5zdGFuY2Uub3JnIiwienV1bC50ZW5hbnRzIjp7ImxvY2FsIjoiKiJ9LCJleHAiOjE1Mzc0MTcxOTguMzc3NTQ0fQ234234wsadfa84wV4Vm7sv3zw9Bw9-WuIka7WkPQxGDAHz7sI
+```
+
+## Autohold
+This command uses the `.zuul.conf` with auth string 
+
+### Autohold-list
+```
+zuul-client  --use-config scs autohold-list --tenant scs
++------------+--------+-----------------------------------------+--------------+------------+-----------+---------+
+|     ID     | Tenant |                 Project                 |     Job      | Ref Filter | Max Count |  Reason |
++------------+--------+-----------------------------------------+--------------+------------+-----------+---------+
+| 0000000000 |  scs   | github.com/opentelekomcloud-scs/testbed | ansible-lint |     .*     |     1     | testing |
+| 0000000001 |  scs   | github.com/opentelekomcloud-scs/testbed |    flake8    |     .*     |     1     | testing |
++------------+--------+-----------------------------------------+--------------+------------+-----------+---------+
+```
+
+### Autohold-delete
+```
+zuul-client --use-config scs-stack autohold --tenant scs-stack --project  github.com/opentelekomcloud-scs/zuul-test --job check-repo --reason "debug" --node-hold-expiration 1800
+```
 
 
 
+### Autohold-delete
+```
+zuul-client --use-config scs autohold-delete --tenant scs 0000000000
+```
+
+## Login to worker nodepool
+Since the node of the nodepool is created in a different OTC project, the only possibility to login is in assigning an IP to the instance. This can be done by the configured natgw.
+
+```
+-o StrictHostKeyChecking=no
+```
+The key can be found within the project k8s_development in secrets.
 
 
