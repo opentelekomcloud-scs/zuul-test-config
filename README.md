@@ -127,6 +127,14 @@ writing RSA key
           +onNDLm0vYD/3bJJKlLAM6p6Rde4ghwsk/N5EH7p0H2JH+osLG8MqwvKpYd4i4=
 ```
 
+# ZUUL Development 
+The ansible scripts executed by the zuul-executor are stored within the dir `/var/lib/zuul/builds/<hash>/<jobname>/project_0/<project>/playbooks`, eg.g. `/var/lib/zuul/builds/939540125f094e5db6a3a722b3ff895a/untrusted/project_0/github.com/opentelekomcloud-scs/zuul-test/playbooks` but the playbooks get deleted by the cleanup job 
+
+The output of the ansible can be read in the logs (argocd) of the zuul-executor or with
+```
+kubectl logs -n zuul-ci -l app.kubernetes.io/component==zuul-executor  -c zuul -f
+```
+Before executing kubectl you have to setup a tunnel with make tunnel, make kube within the k8s_development repo.
 
 # ZUUL Troubeshooting
 
@@ -156,7 +164,7 @@ zuul-admin tenant-conf-check
 
 In scheduler do
 ```
-zuul-admin  create-auth-token --auth-config zuul_operator --user alice --tenant scs-stack --expires-in 1800
+zuul-admin  create-auth-token --auth-config zuul_operator --user alice --tenant scs-stack --expires-in 18000
 ```
 Copy the resulting string into `~/.zuul.conf`
 ```
@@ -182,16 +190,16 @@ zuul-client  --use-config scs autohold-list --tenant scs
 +------------+--------+-----------------------------------------+--------------+------------+-----------+---------+
 ```
 
-### Autohold-delete
+### Autohold
 ```
-zuul-client --use-config scs-stack autohold --tenant scs-stack --project  github.com/opentelekomcloud-scs/zuul-test --job check-repo --reason "debug" --node-hold-expiration 1800
+zuul-client --use-config scs-stack autohold --tenant scs-stack --project  github.com/opentelekomcloud-scs/zuul-test --job check-repo --reason "debug" --node-hold-expiration 18000
 ```
 
 
 
 ### Autohold-delete
 ```
-zuul-client --use-config scs autohold-delete --tenant scs 0000000000
+zuul-client --use-config scs-stack autohold-delete --tenant scs-stack 0000000004
 ```
 
 ## Login to worker nodepool
