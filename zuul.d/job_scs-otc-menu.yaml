@@ -1,7 +1,7 @@
 ---
 - job:
     name: scs
-    parent: base-job
+    parent: base
     description: "Sovereign Cloud Stack"
     abstract: true
 
