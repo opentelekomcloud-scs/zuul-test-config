@@ -1,5 +1,5 @@
 - nodeset:
-    name: ubuntu-jammy
+    name: ubuntu-jammy-nodeset
     nodes:
       - name: ubuntu-jammy
         label: ubuntu-jammy
