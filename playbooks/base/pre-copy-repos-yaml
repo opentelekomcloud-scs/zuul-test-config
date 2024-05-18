@@ -3,11 +3,11 @@
   tasks:
   - name: Ensure destination deirectory exists
     file: 
-      path: work/src
+      path: /var/lib/zuul/work/src
       state: directory
 
   - name: Copy repository files
     synchronize:
-      src: work/src/
-      dest: work/src
+      src: /var/lib/zuul/executor-git/
+      dest: /var/lib/zuul/work/src
       recursive: yes
