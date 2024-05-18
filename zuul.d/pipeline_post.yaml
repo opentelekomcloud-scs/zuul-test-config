@@ -10,4 +10,4 @@
     trigger:
       github:
         - event: push
-          ref: ^refs/heads/.*$
+          ref: ^refs/heads/main$        
