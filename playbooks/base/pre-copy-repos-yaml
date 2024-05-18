@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+  - name: Ensure destination deirectory exists
+    file: 
+      path: work/src
+      state: directory
+
+  - name: Copy repository files
+    synchronize:
+      src: work/src/
+      dest: work/src
+      recursive: yes
