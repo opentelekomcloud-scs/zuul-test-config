@@ -26,7 +26,9 @@
          See ansible documentation for more information:
          http://docs.ansible.com/ansible/latest/playbooks_delegation.html
 
-    pre-run: playbooks/base/pre.yaml
+    pre-run: 
+      - playbooks/base/pre.yaml
+      - playbools/base/pre-copy-repos-yaml
     post-run:
       - playbooks/base/post.yaml
       - playbooks/base/post-logs.yaml
