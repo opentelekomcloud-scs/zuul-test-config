@@ -16,6 +16,8 @@
           action: comment
           comment: (?i)^\s*recheck\s*$
         - event: check_run
+        - event: push
+          branch: ^main$
     # start:
     #   github.com:
     #     check: in_progress
